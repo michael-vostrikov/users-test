@@ -16,6 +16,10 @@ use Yii;
  */
 class Profile extends \yii\db\ActiveRecord
 {
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
+
     /**
      * @inheritdoc
      */
@@ -50,6 +54,17 @@ class Profile extends \yii\db\ActiveRecord
             'phone' => Yii::t('app', 'Phone'),
             'birth_date' => Yii::t('app', 'Birth Date'),
             'gender' => Yii::t('app', 'Gender'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getGenderList()
+    {
+        return [
+            self::GENDER_MALE => Yii::t('app', 'M'),
+            self::GENDER_FEMALE => Yii::t('app', 'F'),
         ];
     }
 }

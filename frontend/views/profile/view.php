@@ -33,7 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'surname',
             'phone',
             'birth_date',
-            'gender',
+            ['attribute' => 'gender', 'value' => function ($model) {
+                return ($model::getGenderList()[$model->gender] ?? '');
+            }],
         ],
     ]) ?>
 
