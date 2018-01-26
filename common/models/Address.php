@@ -30,10 +30,7 @@ class Address extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'name', 'address'], 'required'],
-            [['user_id'], 'integer'],
             [['name', 'address'], 'string', 'max' => 100],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -44,7 +41,7 @@ class Address extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User ID'),
+            'profile_id' => Yii::t('app', 'Profile ID'),
             'name' => Yii::t('app', 'Name'),
             'address' => Yii::t('app', 'Address'),
         ];
@@ -53,8 +50,8 @@ class Address extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getProfile()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(Profile::className(), ['id' => 'profile_id']);
     }
 }

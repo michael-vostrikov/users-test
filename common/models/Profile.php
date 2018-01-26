@@ -67,4 +67,12 @@ class Profile extends \yii\db\ActiveRecord
             self::GENDER_FEMALE => Yii::t('app', 'F'),
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAddresses()
+    {
+        return $this->hasMany(Address::className(), ['profile_id' => 'id']);
+    }
 }

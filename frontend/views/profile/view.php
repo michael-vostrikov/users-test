@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Profile */
@@ -39,4 +40,27 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+
+
+    <br>
+
+    <h2><?= Yii::t('app', 'Addresses') ?></h2>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Create Address'), ['/address/create', 'profile_id' => $model->id], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => new yii\data\ActiveDataProvider(['query' => $model->getAddresses(), 'pagination' => false]),
+        'columns' => [
+            'id',
+            'profile_id',
+            'name',
+            'address',
+
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}', 'urlCreator' => function ($action, $model) {
+                return ['/address/'.$action, 'id' => $model->id];
+            }],
+        ],
+    ]); ?>
 </div>
