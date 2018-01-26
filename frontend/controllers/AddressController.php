@@ -8,6 +8,7 @@ use frontend\models\AddressSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use vitalik74\geocode\Geocode;
 
 /**
  * AddressController implements the CRUD actions for Address model.
@@ -82,6 +83,36 @@ class AddressController extends Controller
         $model->delete();
 
         return $this->redirect(['/profile/view', 'id' => $profile_id]);
+    }
+
+    /**
+     * Returns data for autocomplete ajax request
+     */
+    public function actionAutocomplete($term = null)
+    {
+        if (!$term) {
+            return [];
+        }
+
+        $geo = new Geocode();
+        $res = $geo->get($term, ['kind' => 'house']);
+        // response GeoObjectCollection metaDataProperty GeocoderResponseMetaData found
+        // featureMember i GeoObject metaDataProperty GeocoderMetaData Address formatted
+
+        $cnt = $res['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found'] ?? 0;
+        $data = [];
+        if ($cnt > 0) {
+            $objects = $res['response']['GeoObjectCollection']['featureMember'] ?? [];
+            foreach ($objects as $obj) {
+                $text = $obj['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted'] ?? '';
+                if ($text) {
+                    $data[] = ['id' => $text, 'label' => $text];
+                }
+            }
+        }
+
+        Yii::$app->response->format = Yii::$app->response::FORMAT_JSON;
+        return $data;
     }
 
     /**
