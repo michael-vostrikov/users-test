@@ -39,6 +39,9 @@ class Profile extends \yii\db\ActiveRecord
             [['gender'], 'integer'],
             [['name', 'surname'], 'string', 'max' => 100],
             [['phone'], 'string', 'max' => 20],
+            ['phone', 'match', 'pattern' => '/^\+\d \(\d{3}\) \d{3}-\d{4}$/', 'message' => Yii::t('app', 'Phone must be in following format: +X (XXX) XXX-XXXX')],
+            ['birth_date', 'date', 'format' => 'php:d.m.Y'],
+            ['birth_date', 'match', 'pattern' => '/^\d\d\.\d\d\.\d\d\d\d$/', 'message' => Yii::t('app', 'Birth date must be in following format: dd.mm.yyyy')],
         ];
     }
 
